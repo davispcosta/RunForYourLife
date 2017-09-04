@@ -12,6 +12,8 @@ You want to have a success life, maybe in your love life, maybe being rich.. Thi
 
 ## Game Navigation Diagram
 
+![rfyldiagram](https://user-images.githubusercontent.com/29364533/30038044-44e20918-9197-11e7-88cb-d80d57a0dfcf.png)
+
 ## Stages
 
   ### Baby Stage

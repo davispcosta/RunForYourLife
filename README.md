@@ -36,7 +36,7 @@ You want to have a success life, maybe in your love life, maybe being rich.. Thi
   ### Young Adult Stage
   In this stage, so much worries begin to disturb you. Now you have to collect money and, if you wanna marry, is best to start to collect hearts in the process. Now the life also begin to pass faster day by day, you getting older.
   #### Specific Objectivies
-  - Collect hearts to deblock marriage;
+  - Collect hearts to unlock marriage;
   - Collect fun activities for maintain your happiness;
   - Begin to be fitness or your health is going to decrease, get health food;
   - Collect good task results and internships to increase money.
@@ -85,7 +85,7 @@ Each point score goes from 0 to 100, with collectibles that can increase or decr
   - THAT DEGROUND HEALTH (-10): Bullies, Pizza.
   
   ### Love
-    If in your young adult stage, you collect at least 30 hearts you deblock the marriage in your adult stage
+    If in your young adult stage, you collect at least 30 hearts you unlock the marriage in your adult stage
   If you marry, she is going to help you, with money, with fun. Yeahh.. But you have to help her too, make her feel loved. 
 	With marriage, you gain +5 on scores each 150 meters, but she will lose -10 of love every 150 meters too, so you have to collect her heart with frequency or she will let you.
 		HEARTS: +10 of love

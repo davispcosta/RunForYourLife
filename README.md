@@ -98,7 +98,7 @@ Each point score goes from 0 to 100, with collectibles that can increase or decr
   - THAT DEGROUND MONEY (-10) : Bad Task Results, Robbers;
   
 ## End Of The Game
-Like the life, the game ends when you die, so careful, because you just have one life. Loose her and your only chance is doing all over again. Remember, the goal of life is not just to still live, you want to have success. So, if you have any score to zero, your game end here too.
+Like the life, the game ends when you die, so careful, because you just have one life. Lose her and your only chance is doing all over again. Remember, the goal of life is not just to still live, you want to have success. So, if you have any score to zero, your game end here too.
 
 ## Special Considerations
 Game developed using Corona®.

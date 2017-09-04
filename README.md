@@ -16,6 +16,9 @@ You want to have a success life, maybe in your love life, maybe being rich.. Thi
 
 ## Gameplay
  The game is a runner, made with obstacles to avoid and collectibles that change your scores. The player is always running, and can do a jump or a double jump, to reachs or avoid what he wants.
+ The collectibles and obstacles will be random.
+ In the stages of baby and young: On the range of random distance of 30-50 meters, one of the fatal obstacles will be random choose. And the collectibles will be random choose on a range of 60-80 meters.
+ In the stages of young adult, adult and old: On the range of random distance of 60-80 meters, one of the fatal obstacles will be random choose. And the collectibles will be random choose on a range of 30-50 meters.
 
 ## Stages
   The game is made of 5 stages of life, with different objectivies.
@@ -68,7 +71,7 @@ You don’t want just to live, you want to have success. So, you have not just t
 - Black Diseases;
 
 ## Point System
-Each point score goes from 0 to 100, with collectibles that can increase or decrease each of the scores. And when the life pass, 100 meters to 100 meters, each of yours scores decrease 10 points.
+Each point score goes from 0 to 100, with collectibles that can increase or decrease each of the scores. And when the life pass, 100 meters to 100 meters, each of yours scores decrease 10 points on the stages of young and baby, after these stages, in each stage that distance to increase of 50 meters.
 
   ### Fun
   Do you want to have fun, that’s ok, but you have to know that you have two ways of have fun: Spending money or not.

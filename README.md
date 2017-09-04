@@ -55,6 +55,12 @@ You want to have a success life, maybe in your love life, maybe being rich.. Thi
 ## Life System
 You don’t want just to live, you want to have success. So, you have not just to avoid dangers obstacles that can make you lose your life, but have to manager your score points of success, like fun, health and money to going on with your life. If you have one of these three scores to zero, you lose. 
 
+### Fatal Obstacles
+- Knife and Plugs;
+- Strangers throwing candy;
+- Armed Robbers;
+- Black Diseases;
+
 ## Point System
 Each point score goes from 0 to 100, with collectibles that can increase or decrease each of the scores. And when the life pass, 100 meters to 100 meters, each of yours scores decrease 10 points.
 
@@ -83,7 +89,7 @@ Each point score goes from 0 to 100, with collectibles that can increase or decr
   #### COLLECTIBLES:
   - THAT INCREASE MONEY  (+10):  Good Task Results, Internships;
   - THAT INCREASE MONEY (+20) BUT DEGROUND FUN AND HEALTH(-10): Reports, Study;
-  - THAT DEGROUND MONEY : Bad Task Results;
+  - THAT DEGROUND MONEY : Bad Task Results, Robbers;
   
 ## End Of The Game
 Like the life, the game ends when you die, so careful, because you just have one life. Loose her and your only chance is doing all over again. Remember, the goal of life is not just to still live, you want to have success. So, if you have any score to zero, your game end here too.

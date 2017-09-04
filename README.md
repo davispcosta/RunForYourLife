@@ -4,7 +4,7 @@ Game produce on corona sdk for academic training
 ## Story
 
 Congratulations! You are born!!
-	Now you have a life ahead of you, full of oportunities and challenges. Do your best to grow old with success, and rember that all you collect during your life cand and will change your future. So run, because the life is short and goes faster each time!
+	Now you have a life ahead of you, full of oportunities and challenges. Do your best to grow old with success, and remember that all you collect during your life can and will change your future. So run, because the life is short and goes faster each time!
   
 ## Goal
 
@@ -14,12 +14,16 @@ You want to have a success life, maybe in your love life, maybe being rich.. Thi
 
 ![rfyldiagram](https://user-images.githubusercontent.com/29364533/30038044-44e20918-9197-11e7-88cb-d80d57a0dfcf.png)
 
-## Stages
+## Gameplay
+ The game is a runner, made with obstacles to avoid and collectibles that change your scores. The player is always running, and can do a jump or a double jump, to reachs or avoid what he wants.
 
+## Stages
+  The game is made of 5 stages of life, with different objectivies.
+  
   ### Baby Stage
   Let's begin with baby steps. You are just too young to worry about much, your parents do the most of things for you. So if you don't die, you are doing your job great for now.
   #### Specific Objectivies
-  - You are sensible, knifes and plugs are very dangers to you, so is best to avoid them or you will die;
+  - You are sensible, knifes and plugs are very dangerous to you, so is best to avoid them or you will die;
   - You have to maintain health, so don’t forget to get your baby bottles;
   
   ### Young Stage
@@ -71,14 +75,14 @@ Each point score goes from 0 to 100, with collectibles that can increase or decr
   #### COLLECTIBLES:
   - THAT INCREASE FUN (+10): Toys, Beach;
   - THAT INCREASE FUN(+10) BUT DEGROUND MONEY(-10): Shopping, Travels;
-  - THAT DEGROUND FUN: 
+  - THAT DEGROUND FUN (-10): Bad School Results.
   
   ### Health
   You have to stay health, yes. But this not so easy. The world is made of diseases on your around. So be careful.
   #### COLLECTIBLES:
   - THAT INCREASE HEALTH (+10):  Baby Bottles, Broccoli, Physical Exercices;
-  - THAT INCREASE HEALTH(+10) BUT DEGROUND MONEY(-10): Doctor, Pills;
-  - THAT DEGROUND HEALTH: Bullies, Pizza.
+  - THAT INCREASE HEALTH (+10) BUT DEGROUND MONEY(-10): Doctor, Pills;
+  - THAT DEGROUND HEALTH (-10): Bullies, Pizza.
   
   ### Love
     If in your young adult stage, you collect at least 30 hearts you deblock the marriage in your adult stage
@@ -91,7 +95,7 @@ Each point score goes from 0 to 100, with collectibles that can increase or decr
   #### COLLECTIBLES:
   - THAT INCREASE MONEY  (+10):  Good Task Results, Internships;
   - THAT INCREASE MONEY (+20) BUT DEGROUND FUN AND HEALTH(-10): Reports, Study;
-  - THAT DEGROUND MONEY : Bad Task Results, Robbers;
+  - THAT DEGROUND MONEY (-10) : Bad Task Results, Robbers;
   
 ## End Of The Game
 Like the life, the game ends when you die, so careful, because you just have one life. Loose her and your only chance is doing all over again. Remember, the goal of life is not just to still live, you want to have success. So, if you have any score to zero, your game end here too.

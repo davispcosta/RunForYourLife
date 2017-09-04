@@ -23,38 +23,48 @@ You want to have a success life, maybe in your love life, maybe being rich.. Thi
 ## Stages
   The game is made of 5 stages of life, with different objectivies.
   
-  ### Baby Stage - Until 1000m
-  Let's begin with baby steps. You are just too young to worry about much, your parents do the most of things for you. So if you don't die, you are doing your job great for now.
+  ### Baby Stage
+  Let's begin with baby steps. You are just too young to worry about much, your parents do the most of things for you. So if you don't die, you are doing your job great for now. 
+  [ Until 1000m ]
+  
   #### Specific Objectivies
   - You are sensible, knifes and plugs are very dangerous to you, so is best to avoid them or you will die;
   - You have to maintain health, so don’t forget to get your baby bottles;
   
-  ### Young Stage - Until 3000m
+  ### Young Stage
   Now your problems begin a little... school, bully, tasks.. you think you have too mush on your shoulders, but is just the start. Now you not worry just about live, you want to have fun and be happy. So be happy, at least while you can! 
+  [ Until 3000m ]
+  
   #### Specific Objectivies
   - Collect toys that will increase your fun score;
   - Don't get beat up by the bullies, because that can have a enormous effect on you; 
   - Dont't get candies from strangers, they just want to kidnap you.
   
-  ### Young Adult Stage - Until 6000m
+  ### Young Adult Stage
   In this stage, so much worries begin to disturb you. Now you have to collect money and, if you wanna marry, is best to start to collect hearts in the process. Now the life also begin to pass faster day by day, you getting older.
+  [ Until 6000m ]
+  
   #### Specific Objectivies
   - Collect hearts to unlock marriage;
   - Collect fun activities for maintain your happiness;
   - Begin to be fitness or your health is going to decrease, get health food;
   - Collect good task results and internships to increase money.
   
-  ### Adult Stage - Until 10.000m
+  ### Adult Stage 
    Ooh.. Believe me, this is stage is hard. So much comes up that will decrease your money, your health.. And the life is going pass so much faster that you remember.
+  [ Until 10.000m ]
+  
   #### Specific Objectivies
   - Collect hearts to maintain a happy marriage;
   - Collect fun activities for maintain your happiness;
   - Begin to be take pills and go to the doctor to maintain your health;
   - Collect good jobs and make more reports to increase money.
   
-  ### Old Stage - Until you die
+  ### Old Stage
   You are near of your ending days, you know you gonna die, but you still want to have fun, just have to take more care to live.
   Deceases are all your around, is best to avoid them.
+  [ Until Die ]
+  
   #### SPECIFIC OBJECTIVES
   - Avoid diseases that decrease your health;
   #### CONDITIONS

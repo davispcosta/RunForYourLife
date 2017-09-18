@@ -19,7 +19,7 @@ local mainGroup = display.newGroup()
 local uiGroup = display.newGroup()
 
 local score = 100
-
+local meters = 0
 -----------------------------------
 -----------------------------------
 --- SCENE EVENT FUNCTIONS
@@ -38,6 +38,36 @@ function scene:create( event )
 			background.y = display.contentCenterY
 		backGroup:insert(background)
 
+		local backgroundfar = display.newImage("ui/baby/bgfar1.png")
+ 		backgroundfar.x = 480
+ 		backgroundfar.y = 160
+ 		backGroup:insert(backgroundfar)
+
+ 		local backgroundnear1 = display.newImage("ui/baby/bgnear2.png")
+ 		backgroundnear1.x = 240
+ 		backgroundnear1.y = 160
+ 		backGroup:insert(backgroundnear1)
+
+ 		local backgroundnear2 = display.newImage("ui/baby/bgnear2.png")
+ 		backgroundnear2.x = 760
+ 		backgroundnear2.y = 160
+ 		backGroup:insert(backgroundnear2)
+
+ 		function updateBackgrounds()
+
+ 			backgroundfar.x = backgroundfar.x - (speed/55)
+ 			backgroundnear1.x = backgroundnear1.x - (speed/5)
+
+			if(backgroundnear1.x < -239) then
+ 				backgroundnear1.x = 760
+ 			end
+			backgroundnear2.x = backgroundnear2.x - (speed/5)
+			
+			if(backgroundnear2.x < -239) then
+				backgroundnear2.x = 760
+			end
+ 		end
+
 		-----------------------------------
 		-----------------------------------
 		--- O SCORE
@@ -48,9 +78,12 @@ function scene:create( event )
 		local scoreIcon = display.newImageRect("ui/baby/health.png", 30, 30)
 		scoreIcon.x = 10
 		scoreIcon.y = 60
+		local scoreMeters = display.newText("Score:  " .. meters, 0, 0, "", 30)
+		scoreMeters.x = 200
+		scoreMeters.y = 60
 		uiGroup:insert(scoreText)
 		uiGroup:insert(scoreIcon)
-
+		uiGroup:insert(scoreMeters)
 		-----------------------------------
 		-----------------------------------
 		--- O PERSONAGEM 
@@ -89,7 +122,7 @@ function scene:create( event )
 				local limit = 0
 				function onTouch(event)
 					if(event.phase == "began" and limit < 1) then
-						player:setLinearVelocity(0, -200)
+						player:setLinearVelocity(0, -240)
 						limit = limit + 1
 					end
 				end
@@ -101,7 +134,7 @@ function scene:create( event )
 		--- FÍSICA E CRIAÇÃO DO CHÃO
 
 		physics.start()
-		physics.addBody(player, "dynamic", { density = 0, friction = 0, bounce = 0, })
+		physics.addBody(player, "dynamic", { density = 0, friction = 0, bounce = 0, gravity = 0 })
 
 		local groundMin = 300
 		local groundMax = 340
@@ -130,7 +163,7 @@ function scene:create( event )
 		    obstacles[obstaclesCounter] = display.newImageRect("ui/baby/deadblast.png", 30, 50)
 		    obstacles[obstaclesCounter].x = display.contentWidth + 50
 		    obstacles[obstaclesCounter].y = yVal
-
+		    mainGroup:insert(obstacles[obstaclesCounter])
 		    obstacles[obstaclesCounter].name = "OBSTACLE"
 		    obstacles[obstaclesCounter].id = obstaclesCounter
 		    physics.addBody(obstacles[obstaclesCounter], "kinematic",  { isSensor = true, gravity = 0, density=0.0 })
@@ -168,7 +201,7 @@ function scene:create( event )
 		    collectibles[collectiblesCounter] = display.newImageRect("ui/baby/blast.png", 30, 50)
 		    collectibles[collectiblesCounter].x = display.contentWidth + 50
 		    collectibles[collectiblesCounter].y = yVal
-
+			mainGroup:insert(collectibles[collectiblesCounter])
 		    collectibles[collectiblesCounter].name = "COLECIONAVEL"
 		    collectibles[collectiblesCounter].id = collectiblesCounter
 		    physics.addBody(collectibles[collectiblesCounter], "kinematic",  { isSensor = true, gravity = 0, density=0.0 })
@@ -201,6 +234,10 @@ function scene:create( event )
 
 		local function creationLoop( event )
 			local aux = math.random(0, 10)
+			meters = meters + 1
+			scoreMeters.text = "Score:  " .. meters
+
+			speed = speed + 0.01
 			if aux <= 6 then
 				showCollectibles()
 			else
@@ -209,9 +246,9 @@ function scene:create( event )
 		end
 
 		local function update( event )
-
 			moveCollectibles()
 			moveObstacles()
+			updateBackgrounds()
 		end
 
 		movementLoop = timer.performWithDelay(1, update, -1)
@@ -233,6 +270,9 @@ function scene:create( event )
 				    if( event.other.name == "COLECIONAVEL") then
 				    	score = score + 1
 				    	scoreText.text = score .. "%"
+						meters = meters + 1
+						scoreMeters.text = "Score:  " .. meters
+
 				    	collectiblesDisappear = collectiblesDisappear + 1
 				    	timer.performWithDelay(1, function()
 				    		event.other:removeSelf()
@@ -284,22 +324,7 @@ function scene:hide( event )
 		timer.cancel(emergeLoop)
 		display.remove(mainGroup)
 		display.remove(uiGroup)
-		display.remove(backGroup)
-
-		for i=0, #obstacles do
-			if (obstacles[i] ~= nil) then
-				display.remove(obstacles[i])
-			    obstacles[i] = nil        -- Nil Out Table Instance
-			end
-		end
-		
-		for i=0, #collectibles do
-			if (collectibles[i] ~= nil) then
-				display.remove(collectibles[i])
-			    collectibles[i] = nil        -- Nil Out Table Instance
-			end
-		end
-		
+		display.remove(backGroup)		
 
 	elseif ( phase == "did" ) then
 

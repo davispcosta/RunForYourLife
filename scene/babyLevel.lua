@@ -275,9 +275,10 @@ function scene:create( event )
 
 				    	collectiblesDisappear = collectiblesDisappear + 1
 				    	timer.performWithDelay(1, function()
-				    		event.other:removeSelf()
+				    		event.other.alpha = 0
 		                	event.other = nil
 		            	end, 1)
+		            	event.other:removeSelf();
 				    end
 
 				    if( event.other.name == "OBSTACLE") then
@@ -287,9 +288,10 @@ function scene:create( event )
 						if score > 0 then
 							scoreText.text = score .. "%"
 							timer.performWithDelay(1, function()
-				    			event.other:removeSelf()
+					    		event.other.alpha = 0
 		                		event.other = nil
 		            		end, 1)
+		            		event.other:removeSelf();
 						else
 							composer.gotoScene( "scene.gameover", { time=800, effect="crossFade" } )
 						end

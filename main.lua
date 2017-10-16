@@ -5,6 +5,9 @@
 -----------------------------------------------------------------------------------------
 
 local composer = require "composer"
+soundisOn = true 
+musicisOn = true 
+
 
 -- REMOVE 'BOTTOM BAR' NO ANDROID 
 if system.getInfo( "androidApiLevel" ) and system.getInfo( "androidApiLevel" ) < 19 then
@@ -13,9 +16,20 @@ else
   native.setProperty( "androidSystemUiVisibility", "immersiveSticky" ) 
 end
 
--- RESERVA CANAIS DE ÁUDIO PARA 1- MENU 2- BACKGROUND 3- INTERAÇÕES
-audio.reserveChannels(3)
+
+function splashScreen()
+
+	logo = display.newImage("ui/splash.png")
+
+	logo.alpha = 1
+	logo.x = display.contentCenterX
+	logo.y = display.contentCenterY
+
+	transition.to(logo, {transition = easing.outSine, time = 500, delay = 2000, alpha = 0})
+
+	composer.gotoScene( "scene.menu", { params={ } } )
+end
 
 -- VAI PARA O MENU
-composer.gotoScene( "scene.menu", { params={ } } )
+splashScreen()
 

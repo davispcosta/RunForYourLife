@@ -3,20 +3,35 @@
 -- Include modules/libraries
 local composer = require( "composer")
 local widget = require( "widget" )
-
+local sounds = require( "soundsfile" )
 
 -- Create a new Composer scene
 local scene = composer.newScene()
 
 local function gotoGame()
-	composer.gotoScene( "scene.babyLevel" )
+	playSFX(menupicksound)
+	composer.gotoScene( "scene.levels" )
 end
+
+local function openOptions()
+	playSFX(menupicksound)
+	resumebox = display.newRect( 0, 0, display.contentWidth/2, display.contentHeight/2 )
+		resumebox.x = display.contentWidth/2
+		resumebox.y = display.contentHeight/2 
+		resumebox:setFillColor(1, 1, 1)
+
+	resumebtn = display.newImageRect("ui/menu/resumebtn.png", 60, 60)
+		resumebtn.x = display.contentWidth/2
+		resumebtn.y = display.contentHeight/2 
+end
+
 
 function scene:create( event )
 
 	local sceneGroup = self.view
-	-- Code here runs when the scene is first created but has not yet appeared on screen
-
+	
+	playgameMusic(menubgmusic)
+	
 	local background = display.newImageRect( sceneGroup, "ui/menu/background.png", 800, 400 )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
@@ -34,6 +49,7 @@ function scene:create( event )
 	optionButton.y = display.contentCenterY + 30
 
 	playButton:addEventListener( "tap", gotoGame )
+	optionButton:addEventListener("tap", openOptions)
 end
 
 -- show()

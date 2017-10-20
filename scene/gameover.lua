@@ -2,6 +2,7 @@
 -- Include modules/libraries
 local composer = require( "composer")
 local widget = require( "widget" )
+local sounds = require( "soundsfile" )
 
 -- Create a new Composer scene
 local scene = composer.newScene()
@@ -13,15 +14,13 @@ end
 function scene:create( event )
 
 	local sceneGroup = self.view
+
+	playgameMusic(adultbgmusic)
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 
 	local background = display.newImageRect( sceneGroup, "ui/gameover/background.png", 800, 400 )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
-
-	local backButton = display.newImageRect( sceneGroup, "ui/gameover/overmessage.png", 200, 100 )
-	backButton.x = display.contentCenterX 
-	backButton.y = display.contentCenterY - 60
 
 	local backButton = display.newImageRect( sceneGroup, "ui/gameover/backbtn.png", 150, 50 )
 	backButton.x = display.contentCenterX 

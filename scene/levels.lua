@@ -5,7 +5,7 @@ local myData = require( "data" )
 local starVertices = { 0,-8,1.763,-2.427,7.608,-2.472,2.853,0.927,4.702,6.472,0.0,3.0,-4.702,6.472,-2.853,0.927,-7.608,-2.472,-1.763,-2.427 }
 
 local function handleCancelButtonEvent()
-	composer.gotoScene( "scene.menu", { effect="crossFade", time=333 } )
+	composer.gotoScene("scene.menu")
 end
 
 -- Button handler to go to the selected level
@@ -16,6 +16,7 @@ local function handleLevelSelect( event )
 	-- This could be done via passed parameters as well.
 	
 		myData.settings.currentLevel = event.target.id
+		audio.stop(1)
 		-- Go to the game scene
 		if(event.target.id == '1') then
 			composer.gotoScene( "scene.babyLevel", { effect="crossFade", time=333 } )
@@ -35,7 +36,7 @@ end
 function scene:create( event )
 	local sceneGroup = self.view
 	-- Create background
-	local background = display.newImageRect( sceneGroup, "ui/menu/background.png", 800, 400 )
+	local background = display.newImageRect( sceneGroup, "ui/menu/background.png", 580, 300 )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 	sceneGroup:insert( background )

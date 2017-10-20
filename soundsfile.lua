@@ -1,10 +1,11 @@
 --soundeffects 
 menubgmusic = audio.loadStream ("sound/menu.mp3")
+gameoverbgmusic = audio.loadStream ("sound/school_of_quirks.mp3")
 childbgmusic = audio.loadStream ("sound/school_of_quirks.mp3")
 adultbgmusic = audio.loadStream ("sound/busy_day_at_the_market.wav")
 
 menupicksound = audio.loadSound ("sound/menu_pick.wav")
-jumpsound = audio.loadSound ("sound/huh.wav")
+jumpsound = audio.loadSound ("sound/jump.wav")
 
 soundisOn = true 
 musicisOn = true 

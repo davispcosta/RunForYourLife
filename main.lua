@@ -5,8 +5,6 @@
 -----------------------------------------------------------------------------------------
 
 local composer = require "composer"
-soundisOn = true 
-musicisOn = true 
 
 
 -- REMOVE 'BOTTOM BAR' NO ANDROID 
@@ -24,10 +22,11 @@ function splashScreen()
 	logo.alpha = 1
 	logo.x = display.contentCenterX
 	logo.y = display.contentCenterY
+	audio.setVolume(0)
 
 	transition.to(logo, {transition = easing.outSine, time = 500, delay = 2000, alpha = 0})
 
-	composer.gotoScene( "scene.menu", { params={ } } )
+	composer.gotoScene( "scene.babyLevel", { params={ } } )
 end
 
 -- VAI PARA O MENU

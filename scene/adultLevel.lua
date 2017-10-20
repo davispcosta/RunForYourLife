@@ -2,11 +2,12 @@
 -- Include modules/libraries
 local composer = require("composer")
 local physics = require("physics")
+
+local level = require("leveltemplate")
 local sounds = require( "soundsfile" )
 
 local scene = composer.newScene()
 composer.recycleOnSceneChange = true
-
 
 local obstacles = {}
 local obstaclesCounter = 0
@@ -222,9 +223,9 @@ function scene:create( event )
 				function onTouch(event)
 					if(gamePaused == false) then
 						if(event.phase == "began" and limit < 1) then
+							playSFX(jumpsound)
 							player:setLinearVelocity(0, -240)
 							limit = limit + 1
-							playSFX(jumpsound)
 						end
 					end
 				end
@@ -348,8 +349,6 @@ function scene:create( event )
 			end
 		end
 
-		
-
 		-----------------------------------
 		-----------------------------------
 		--- MOVIMENTO DO CENARIO E CRIAÇÃO RANDOMICA
@@ -422,6 +421,7 @@ function scene:create( event )
 			            		end, 1)
 			            		event.other:removeSelf();
 							else
+								audio.stop(1)
 								composer.gotoScene( "scene.gameover", { time=800, effect="crossFade" } )
 							end
 				    	else 

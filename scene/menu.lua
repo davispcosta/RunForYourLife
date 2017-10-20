@@ -10,6 +10,11 @@ local scene = composer.newScene()
 
 local function gotoGame()
 	playSFX(menupicksound)
+	composer.gotoScene( "scene.babyLevel" )
+end
+
+local function openlevels()
+	playSFX(menupicksound)
 	composer.gotoScene( "scene.levels" )
 end
 
@@ -32,24 +37,32 @@ function scene:create( event )
 	
 	playgameMusic(menubgmusic)
 	
-	local background = display.newImageRect( sceneGroup, "ui/menu/background.png", 800, 400 )
+	local background = display.newImageRect( sceneGroup, "ui/menu/background.png", 580, 300 )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
-	local title = display.newImage( sceneGroup, "ui/logo.png")
-	title.x = display.contentCenterX - 100
+	local title = display.newImageRect( sceneGroup, "ui/logo.png", 230, 180)
+	title.x = display.contentCenterX - 110
 	title.y = display.contentCenterY
 
 	local playButton = display.newImageRect( sceneGroup, "ui/menu/playbtn.png", 150, 50 )
-	playButton.x = display.contentCenterX + 160
-	playButton.y = display.contentCenterY - 30
+	playButton.x = display.contentCenterX + 120
+	playButton.y = display.contentCenterY - 60
 
-	local optionButton = display.newImageRect( sceneGroup, "ui/menu/optionsbtn.png", 150, 50 )
-	optionButton.x = display.contentCenterX + 160
-	optionButton.y = display.contentCenterY + 30
+	local lvlButton = display.newImageRect( sceneGroup, "ui/menu/lvlbtn.png", 150, 50 )
+	lvlButton.x = display.contentCenterX + 120
+	lvlButton.y = display.contentCenterY
+
+	local achievementButton = display.newImageRect( sceneGroup, "ui/menu/achievementbtn.png", 70, 50 )
+	achievementButton.x = display.contentCenterX + 80
+	achievementButton.y = display.contentCenterY + 60
+
+	local settingsButton = display.newImageRect( sceneGroup, "ui/menu/settingsbtn.png", 70, 50 )
+	settingsButton.x = display.contentCenterX + 160
+	settingsButton.y = display.contentCenterY + 60
 
 	playButton:addEventListener( "tap", gotoGame )
-	optionButton:addEventListener("tap", openOptions)
+	lvlButton:addEventListener("tap", openlevels)
 end
 
 -- show()

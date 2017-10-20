@@ -3,6 +3,8 @@
 local composer = require("composer")
 local physics = require("physics")
 
+local level = require("leveltemplate")
+
 local scene = composer.newScene()
 
 composer.recycleOnSceneChange = true
@@ -18,8 +20,6 @@ local backGroup = display.newGroup()
 local mainGroup = display.newGroup()
 local uiGroup = display.newGroup()
 
-local score = 100
-local meters = 0
 -----------------------------------
 -----------------------------------
 --- SCENE EVENT FUNCTIONS
@@ -28,12 +28,11 @@ function scene:create( event )
 	local sceneGroup = self.view
 
 	local speed = 5;
-
 		-----------------------------------
 		-----------------------------------
 		--- O  BACKGROUND
 
-		local background = display.newImageRect(backGroup, "ui/baby/background.png", 600, 400 )
+		local background = display.newImageRect(backGroup, "ui/baby/background.png", 600, 250 )
 			background.x = display.contentCenterX
 			background.y = display.contentCenterY
 		backGroup:insert(background)
@@ -66,24 +65,9 @@ function scene:create( event )
 			if(backgroundnear2.x < -239) then
 				backgroundnear2.x = 760
 			end
- 		end
+		 end
 
-		-----------------------------------
-		-----------------------------------
-		--- O SCORE
 
-		local scoreText = display.newText(score .. "%", 0, 0, "", 30)
-		scoreText.x = 70
-		scoreText.y = 60
-		local scoreIcon = display.newImageRect("ui/baby/health.png", 30, 30)
-		scoreIcon.x = 10
-		scoreIcon.y = 60
-		local scoreMeters = display.newText("Score:  " .. meters, 0, 0, "", 30)
-		scoreMeters.x = 200
-		scoreMeters.y = 60
-		uiGroup:insert(scoreText)
-		uiGroup:insert(scoreIcon)
-		uiGroup:insert(scoreMeters)
 		-----------------------------------
 		-----------------------------------
 		--- O PERSONAGEM 
@@ -129,6 +113,13 @@ function scene:create( event )
 
 				Runtime:addEventListener("touch", onTouch)
 
+				local header = level:buildHeader(true, false, false, false)
+				uiGroup:insert(header)
+				
+				level:buildPause(player)
+		
+				local meters = level:createScoreMeters()
+				uiGroup:insert(meters)
 		----------------------------------------------------------
 		----------------------------------------------------------
 		--- FÍSICA E CRIAÇÃO DO CHÃO
@@ -160,7 +151,7 @@ function scene:create( event )
 
 		    local yVal = math.random(100, display.contentHeight-80)
 
-		    obstacles[obstaclesCounter] = display.newImageRect("ui/baby/deadblast.png", 30, 50)
+		    obstacles[obstaclesCounter] = display.newImageRect("ui/baby/deadblast.png", 60, 60)
 		    obstacles[obstaclesCounter].x = display.contentWidth + 50
 		    obstacles[obstaclesCounter].y = yVal
 		    mainGroup:insert(obstacles[obstaclesCounter])
@@ -198,7 +189,7 @@ function scene:create( event )
 
 		    local yVal = math.random(100, display.contentHeight-80)
 
-		    collectibles[collectiblesCounter] = display.newImageRect("ui/baby/blast.png", 30, 50)
+		    collectibles[collectiblesCounter] = display.newImageRect("ui/baby/blast.png", 60, 60)
 		    collectibles[collectiblesCounter].x = display.contentWidth + 50
 		    collectibles[collectiblesCounter].y = yVal
 			mainGroup:insert(collectibles[collectiblesCounter])
@@ -207,8 +198,7 @@ function scene:create( event )
 		    physics.addBody(collectibles[collectiblesCounter], "kinematic",  { isSensor = true, gravity = 0, density=0.0 })
 		    collectiblesCounter = collectiblesCounter + 1
 
-		    score = score - 1
-		    scoreText.text = score .. "%"
+		    level:reduceHealth(1)
 		end
 
 		moveCollectibles = function ()
@@ -234,8 +224,6 @@ function scene:create( event )
 
 		local function creationLoop( event )
 			local aux = math.random(0, 10)
-			meters = meters + 1
-			scoreMeters.text = "Score:  " .. meters
 
 			speed = speed + 0.01
 			if aux <= 6 then
@@ -268,10 +256,8 @@ function scene:create( event )
 				    end
 
 				    if( event.other.name == "COLECIONAVEL") then
-				    	score = score + 1
-				    	scoreText.text = score .. "%"
-						meters = meters + 1
-						scoreMeters.text = "Score:  " .. meters
+				    	level:addHealth(1)
+						level:addMeters()
 
 				    	collectiblesDisappear = collectiblesDisappear + 1
 				    	timer.performWithDelay(1, function()
@@ -282,11 +268,10 @@ function scene:create( event )
 				    end
 
 				    if( event.other.name == "OBSTACLE") then
-				    	score = score - 50
+				    	level:reduceHealth(50)
 				    	obstaclesDisappear = obstaclesDisappear + 1
 
-						if score > 0 then
-							scoreText.text = score .. "%"
+						if level:isAlive() then
 							timer.performWithDelay(1, function()
 					    		event.other.alpha = 0
 		                		event.other = nil
@@ -299,8 +284,6 @@ function scene:create( event )
 				end
 				player.collision = onLocalCollision
 				player:addEventListener("collision")
-		
-
 end
 
 function scene:show( event )
@@ -312,7 +295,6 @@ function scene:show( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
-
 	end
 end
 
@@ -327,9 +309,7 @@ function scene:hide( event )
 		display.remove(mainGroup)
 		display.remove(uiGroup)
 		display.remove(backGroup)		
-
 	elseif ( phase == "did" ) then
-
 		physics.pause()
 		composer.removeScene("babyLevel")
 		composer.hideOverlay()

@@ -2,6 +2,7 @@
 -- Include modules/libraries
 local composer = require("composer")
 local physics = require("physics")
+local sounds = require( "soundsfile" )
 
 local scene = composer.newScene()
 
@@ -28,6 +29,8 @@ local meters = 0
 
 function scene:create( event )
 	local sceneGroup = self.view
+
+	playgameMusic(childbgmusic)
 
 	local speed = 5;
 

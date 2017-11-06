@@ -18,13 +18,13 @@ function scene:create( event )
 	playgameMusic(adultbgmusic)
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 
-	local background = display.newImageRect( sceneGroup, "ui/gameover/background.png", 800, 400 )
+	local background = display.newImageRect( sceneGroup, "ui/gameover/background.png", 600, 400 )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
-	local backButton = display.newImageRect( sceneGroup, "ui/gameover/backbtn.png", 150, 50 )
+	local backButton = display.newImageRect( sceneGroup, "ui/gameover/backbtn.png", 200, 65 )
 	backButton.x = display.contentCenterX 
-	backButton.y = display.contentCenterY + 50
+	backButton.y = display.contentCenterY + 100
 
 	backButton:addEventListener( "tap", gotoMenu )
 end

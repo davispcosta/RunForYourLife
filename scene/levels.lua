@@ -30,31 +30,54 @@ end
 function scene:create( event )
 	local sceneGroup = self.view
 
-	local background = display.newImageRect( sceneGroup, "ui/menu/background.png", 580, 300 )
+	local background = display.newImageRect( sceneGroup, "ui/menu/box.png", 580, 300 )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 	sceneGroup:insert( background )
 
 	local levelSelectGroup = display.newGroup()
 
-	local xOffset = -100
-	local yOffset = -50
-	local cellCount = 1
+	local xOffset = 150
+	local yOffset = 50
+
+	local scrollView = widget.newScrollView{
+		left = -50,
+		leftPadding = 50,
+		rightPadding = 50,
+		top = 90,
+		width = display.contentWidth+100,
+		height = display.contentHeight/2,
+		hideBackground = true,
+		horizontalScrollDisabled = false ,
+		verticalScrollDisabled = true ,
+	}
 
 	local buttons = {}
 
 	for i = 1, myData.maxLevels do
+
+		background = display.newImageRect(myData.settings.levels[i].background, 150, 100)
+		background.x = xOffset
+		background.y = yOffset
+		scrollView:insert(background)
+
 		buttons[i] = widget.newButton({
 			id = tostring(i),
-			width = 80,
-			height = 60,
-			defaultFile = myData.settings.levels[i].background,
+			width = 50,
+			height = 33,
+			defaultFile = "ui/pause/resumebtn.png",
 			onEvent = handleLevelSelect,
-		})
+		})			
 
 		buttons[i].x = xOffset
 		buttons[i].y = yOffset
-		levelSelectGroup:insert( buttons[i] )
+		scrollView:insert( buttons[i] )
+
+		titleText = display.newText(myData.settings.levels[i].title, 0, 0, "zorque.ttf", 30)
+		titleText:setFillColor(0.2)
+		titleText.x = xOffset
+		titleText.y = yOffset + 100
+		scrollView:insert(titleText)
 
 		if ( myData.settings.unlockedLevels == nil ) then
 			myData.settings.unlockedLevels = 1
@@ -68,37 +91,33 @@ function scene:create( event )
 		end 
 		
 		local star = {} 
-		if ( myData.settings.levels[i] and myData.settings.levels[i].stars and myData.settings.levels[i].stars > 0 ) then
-			for j = 1, myData.settings.levels[i].stars do
-				star[j] = display.newPolygon( 0, 0, starVertices )
-				star[j]:setFillColor( 1, 0.9, 0 )
-				star[j].strokeWidth = 1
-				star[j]:setStrokeColor( 1, 0.8, 0 )
+		for j = 1, 3 do
+				star[j] = display.newPolygon( 0, 0, starVertices)				
+				if( j <= myData.settings.levels[i].stars) then
+					star[j]:setFillColor( 1, 0.9, 0 )
+					
+				else
+					star[j]:setFillColor( 0, 0, 0 )
+				end
 				star[j].x = buttons[i].x + (j * 16) - 32
-				star[j].y = buttons[i].y + 8
-				levelSelectGroup:insert( star[j] )
-			end
+				star[j].y = buttons[i].y + 70
+				scrollView:insert( star[j] )
 		end
 		
-		xOffset = xOffset + 100
-		cellCount = cellCount + 1
-		if ( cellCount > 3 ) then
-		cellCount = 1
-		xOffset = -100
-		yOffset = yOffset + 80
-		end
+		xOffset = xOffset + 200
 	end
 	
-	sceneGroup:insert( levelSelectGroup )
+	sceneGroup:insert(levelSelectGroup)
 	levelSelectGroup.x = display.contentCenterX
 	levelSelectGroup.y = display.contentCenterY
 	
 	local doneButton = display.newImageRect( sceneGroup, "ui/menu/backbtn.png", 150, 50 )
-	doneButton.x = display.contentCenterX
-	doneButton.y = display.contentHeight - 40
+	doneButton.x = display.contentCenterX + 200
+	doneButton.y = 40
 	doneButton:addEventListener( "tap", handleCancelButtonEvent)
 	
-	sceneGroup:insert( doneButton )
+	sceneGroup:insert(doneButton)
+	sceneGroup:insert(scrollView)
 end
 
 -- On scene show...

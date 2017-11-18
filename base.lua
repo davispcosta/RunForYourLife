@@ -45,18 +45,22 @@ local base = {}
                 base.levels[1].backgroundNear[7].y = 200
 
             base.levels[1].collectibles = {}
-            base.levels[1].numCollectibles = 1
+            base.levels[1].numCollectibles = 2
 
                 base.levels[1].collectibles[1]={}
                 base.levels[1].collectibles[1].type = "health"
                 base.levels[1].collectibles[1].path = "ui/collect/blast.png"
+
+                base.levels[1].collectibles[2]={}
+                base.levels[1].collectibles[2].type = "shoot"
+                base.levels[1].collectibles[2].path = "ui/collect/bear.png"
 
             base.levels[1].obstacles = {}
             base.levels[1].numObstacles = 1
             
                 base.levels[1].obstacles[1] = {}
                 base.levels[1].obstacles[1].type = "health"
-                base.levels[1].obstacles[1].path = "ui/baby/deadblast.png"
+                base.levels[1].obstacles[1].path = "ui/collect/dicese.png"
 
         --------------------------------------
         --- CHILD LEVEL ---

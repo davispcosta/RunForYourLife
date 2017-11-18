@@ -28,11 +28,7 @@ function scene:create( event )
 		mainGroup:insert(player)
 	
 		level:setValues(100,100,100,100)
-		local header = level:buildHeader(true, true, true, false)
-		uiGroup:insert(header)
 	
-		level:buildPause(player)
-
 		local numShoots = level:createScoreProjectiles()
 		uiGroup:insert(numShoots)
 			
@@ -45,7 +41,8 @@ function scene:create( event )
 		mainGroup:insert(floor)
 	
 		physics.addBody(player, "dynamic", { density = 0, friction = 0, bounce = 0, gravity = 0 })
-	
+		player.isFixedRotation=true	
+		
 		local function creationLoop( event )
 			local aux = math.random(0, 10)
 	
@@ -61,6 +58,7 @@ function scene:create( event )
 		local function update( event )
 			level:moveCollectibles()
 			level:moveObstacles()
+			level:moveFloor(floor)
 			
 			back = level:updateBackground(level:getCurrentLevel())
 			backGroup:insert(back)
@@ -100,8 +98,8 @@ function scene:create( event )
 				end, 1)
 				event.other:removeSelf();
 	
-				if(level:getMeters() == 5) then
-					composer.gotoScene( "scene.congratulations", { effect="crossFade", time=333 } )
+				if(level:getMeters() == 15) then
+					goToNextLevel()
 				end
 			end
 	
@@ -129,10 +127,50 @@ function scene:create( event )
 		end
 		player.collision = playerCollision
 		player:addEventListener("collision")
+
+		function goToNextLevel()
+			local playery = player.y
+			local playerx = player.x
+			player = level:celebratePlayer(player, "ui/young/celebrating.png")
+			player.y = playery
+			player.x = playerx
+			timer.performWithDelay(1, function()
+				physics.addBody(player, "dynamic", { density = 0, friction = 0, bounce = 0 })						
+			end)
+			jumpbtn:removeEventListener("touch", jumpbtn)
+			downbtn:removeEventListener("touch", downbtn)		
+			shootbtn:removeEventListener("touch", shootbtn)
+			mainGroup:insert(player)
+			timer.pause(emergeLoop)
+			timer.pause(movementLoop)	
 	
-		jumpbtn = display.newImageRect("ui/base/jumpbtn.png", 40, 40)
-		jumpbtn.x = 20
-		jumpbtn.y = display.contentHeight - 40
+			toLeft = timer.performWithDelay(1, function()
+				player.x = player.x - 1
+				if(player.x < 0) then
+					composer.gotoScene("scene.congratulations")
+				end
+			end, -1)
+			timer.pause(toLeft)
+	
+			timer.performWithDelay(1500, function()
+				playery = player.y
+				playerx = player.x
+				player:removeSelf()
+				player = level:createPlayer("ui/young/normal-sprite.png", "normalRun")
+				player.x = playerx
+				player.xScale = -1
+				player.y = playery
+				mainGroup:insert(player)
+				timer.resume(toLeft)
+				physics.addBody(player, "dynamic", { density = 0, friction = 0, bounce = 0, gravity = 0 })			
+				player:setSequence("normalRun")
+				player:play()
+			end)
+		end
+	
+		jumpbtn = display.newImageRect("ui/base/jumpbtn.png", 60, 60)
+		jumpbtn.x = 0
+		jumpbtn.y = display.contentHeight - 35
 		function jumpbtn:touch(event)		
 			if(event.phase == "began") then
 				jumpLimit = jumpLimit + 1
@@ -143,11 +181,11 @@ function scene:create( event )
 						player = level:createPlayer("ui/young/normal-sprite.png", "normalRun")
 						mainGroup:insert(player)
 						physics.addBody(player, "dynamic", { density = 0, friction = 0, bounce = 0, gravity = 0 })			
+						player.isFixedRotation=true							
 						player:setSequence("normalRun")
 						player:play()
 						player.collision = playerCollision			
 						player:addEventListener("collision")
-						player:setLinearVelocity(0, -240)
 					else
 						player:setLinearVelocity(0, -240)
 					end
@@ -158,9 +196,9 @@ function scene:create( event )
 		jumpbtn:addEventListener("touch", jumpbtn)
 		uiGroup:insert(jumpbtn)
 	
-		downbtn = display.newImageRect("ui/base/downbtn.png", 40, 40)
+		downbtn = display.newImageRect("ui/base/downbtn.png", 60, 60)
 		downbtn.x = 70
-		downbtn.y = display.contentHeight - 40
+		downbtn.y = display.contentHeight - 35
 		function downbtn:touch(event)	
 			if(event.phase == "began") then
 				print('down'.. jumpLimit)
@@ -173,6 +211,7 @@ function scene:create( event )
 					player.y = playery
 					mainGroup:insert(player)
 					physics.addBody(player, "dynamic", { density = 0, friction = 0, bounce = 0, gravity = 0 })			
+					player.isFixedRotation=true						
 					player.collision = playerCollision
 					player:addEventListener("collision")
 				end
@@ -181,9 +220,9 @@ function scene:create( event )
 		downbtn:addEventListener("touch", downbtn)
 		uiGroup:insert(downbtn)
 	
-		shootbtn = display.newImageRect("ui/base/shootbtn.png", 40, 40)
+		shootbtn = display.newImageRect("ui/base/shootbtn.png", 60, 60)
 		shootbtn.x = display.contentWidth 
-		shootbtn.y = display.contentHeight - 40
+		shootbtn.y = display.contentHeight - 35
 	
 		local function shootCollision( self, event )
 			print( "--- COLISAO ---" )
@@ -210,8 +249,8 @@ function scene:create( event )
 				event.other:removeSelf();
 				event.target:removeSelf();
 				
-				if(level:getMeters() == 5) then
-					composer.gotoScene( "scene.congratulations", { effect="crossFade", time=333 } )
+				if(level:getMeters() == 15) then
+					goToNextLevel()
 				end
 			end
 	
@@ -239,13 +278,18 @@ function scene:create( event )
 					projectile:setLinearVelocity( 150, 0 )
 					projectile.collision = shootCollision
 					projectile:addEventListener("collision")
+					mainGroup:insert(projectile)
 					level:reduceProjectiles(1)					
 				end
 			end
 		end	
 		shootbtn:addEventListener("touch", shootbtn)
 		uiGroup:insert(shootbtn)
-	
+
+		local header = level:buildHeader(true, true, true, false)
+		uiGroup:insert(header)
+
+		level:buildPause(player)
 end
 
 function scene:show( event )
@@ -269,6 +313,8 @@ function scene:hide( event )
 	if ( phase == "will" ) then
 		timer.cancel(movementLoop)
 		timer.cancel(emergeLoop)
+		timer.cancel(toLeft)
+		
 		display.remove(mainGroup)
 		display.remove(uiGroup)
 		display.remove(backGroup)		

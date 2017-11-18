@@ -1,4 +1,6 @@
+local composer = require("composer")
 local base = require( "base")
+local sounds = require( "soundsfile" )
 
 local lvl = {} 
 local uiGroup = display.newGroup()
@@ -28,6 +30,7 @@ local playerT
 local obstacles = {}
 local obstaclesCounter = 0
 local obstaclesDisappear = 0
+
 local numProjectile = 10
 
 local collectibles = {}
@@ -41,47 +44,155 @@ function resumeGame()
 	physics.start()
 	timer.resume(movementLoop)
 	timer.resume(emergeLoop)
-	resumebox:removeSelf()
-	resumebtn:removeSelf()
-	resumeText:removeSelf()
-	pauserect:removeSelf()
+	display.remove(pauseGroup)
 	gamePaused = false
 end
 
 function pauseGame()
 	gamePaused = true
-
 	playerT:pause()
 	physics.pause()
 	timer.pause(movementLoop)
 	timer.pause(emergeLoop)
+	pauseGroup = display.newGroup()
 
 	pauserect = display.newRect(0, 0, display.contentWidth+100, 640)
 	pauserect.x = display.contentWidth/2
+	pauserect:setFillColor(0)
 	pauserect.alpha = 0.75
 	pauserect:addEventListener("tap", function() return true end)
+	pauseGroup:insert(pauserect)
 
-	resumebox = display.newImageRect("ui/pause/box.png", display.contentWidth/2, display.contentHeight/2 )
+	resumebox = display.newImageRect("ui/menu/box.png", display.contentWidth/2+200, display.contentHeight/2+100 )
 		resumebox.x = display.contentWidth/2
-		resumebox.y = display.contentHeight/2 
+		resumebox.y = display.contentHeight/2
+		pauseGroup:insert(resumebox)
 
-	resumebtn = display.newImageRect("ui/pause/resumebtn.png", 60, 60)
-		resumebtn.x = display.contentWidth/2
-		resumebtn.y = display.contentHeight/2 + 20
+	resumebtn = display.newImageRect("ui/pause/resumebtn.png", 50, 50)
+		resumebtn.x = display.contentWidth/2 - 150
+		resumebtn.y = 100
 		resumebtn:addEventListener("tap", resumeGame)
+		pauseGroup:insert(resumebtn)
 
-	resumeText = display.newText("CONTINUAR", 0, 0, "zorque.ttf", 35)
+	resumeText = display.newText("CONTINUAR", 0, 0, "zorque.ttf", 25)
 	resumeText:setFillColor(0.2)
-	resumeText.x = display.contentWidth/2 
-	resumeText.y = 130
+	resumeText.x = display.contentWidth/2  - 40
+	resumeText.y = 100
+	pauseGroup:insert(resumeText)
 
+	musicText = display.newText("Música", 0, 0, "zorque.ttf", 20)
+	musicText:setFillColor(0.2)
+	musicText.x = display.contentWidth/2 - 50
+	musicText.y = 140
+	pauseGroup:insert(musicText)
+	
+	local musicon = display.newImageRect("ui/menu/soundson.png", 70, 30)
+	musicon.x = display.contentWidth/2+50
+	musicon.y = display.contentHeight/2 - 20
+	pauseGroup:insert(musicon)
+	local musicoff = display.newImage("ui/menu/soundsoff.png", 70, 30)
+	musicoff.x = display.contentWidth/2+50
+	musicoff.y = display.contentHeight/2 - 20
+	musicoff.isVisible = false
+	pauseGroup:insert(musicoff)
+		
+	local function onTap( self, event )
+		musicon.isVisible = not musicon.isVisible
+		musicoff.isVisible = not musicoff.isVisible
+		if(musicon.isVisible) then
+			musicon.width = 70
+			musicon.height = 30
+		else 
+			musicoff.width = 70
+			musicoff.height = 30
+		end
+		return true
+	end 
+	musicon:addEventListener( "tap", onTap )
+	musicoff:addEventListener( "tap", onTap )
+
+	soundText = display.newText("Sons", 0, 0, "zorque.ttf", 20)
+	soundText:setFillColor(0.2)
+	soundText.x = display.contentWidth/2 - 50
+	soundText.y = 180
+	pauseGroup:insert(soundText)
+
+	local soundon = display.newImageRect("ui/menu/soundson.png", 70, 30)
+	soundon.x = display.contentWidth/2+50
+	soundon.y = display.contentHeight/2 + 20
+	pauseGroup:insert(soundon)
+	
+	local soundoff = display.newImage("ui/menu/soundsoff.png", 70, 30)
+	soundoff.x = display.contentWidth/2+50
+	soundoff.y = display.contentHeight/2 + 20
+	soundoff.isVisible = false
+	pauseGroup:insert(soundoff)
+	
+	local function onTap( self, event )
+		soundon.isVisible = not soundon.isVisible
+		soundoff.isVisible = not soundoff.isVisible
+		if(soundon.isVisible) then
+			soundon.width = 70
+			soundon.height = 30
+		else 
+			soundoff.width = 70
+			soundoff.height = 30
+		end
+		
+		return true
+	end 
+	soundon:addEventListener( "tap", onTap )
+	soundoff:addEventListener( "tap", onTap )
+
+	languageText = display.newText("Idioma", 0, 0, "zorque.ttf", 20)
+	languageText:setFillColor(0.2)
+	languageText.x = display.contentWidth/2 - 50
+	languageText.y = 220
+	pauseGroup:insert(languageText)
+
+	local englishon = display.newImageRect("ui/menu/englishon.png", 70, 30)
+	englishon.x = display.contentWidth/2+50
+	englishon.y = display.contentHeight/2 + 60
+	pauseGroup:insert(englishon)
+	
+	local portugueseon = display.newImage("ui/menu/portugueseon.png", 70, 30)
+	portugueseon.x = display.contentWidth/2+50
+	portugueseon.y = display.contentHeight/2 + 60
+	portugueseon.isVisible = false
+	pauseGroup:insert(portugueseon)
+		
+	local function onTap( self, event )
+		portugueseon.isVisible = not portugueseon.isVisible
+		englishon.isVisible = not englishon.isVisible
+		if(portugueseon.isVisible) then
+			portugueseon.width = 70
+			portugueseon.height = 30
+		else 
+			englishon.width = 70
+			englishon.height = 30
+		end
+		
+		return true
+	end 
+	portugueseon:addEventListener( "tap", onTap )
+	englishon:addEventListener( "tap", onTap )
+		
+	menubtn = display.newImageRect("ui/menu/backbtn.png", 120, 40)
+	menubtn.x = display.contentWidth/2 + 180
+	menubtn.y = display.contentHeight/2 + 110
+	pauseGroup:insert(menubtn)
+	menubtn:addEventListener("tap", function()
+		display.remove(pauseGroup)		
+		composer.gotoScene("scene.menu")
+	end
+	)
 end
 
 function lvl:createPlayer(playerSheet, sequence)
 	
 	local normalOptions =
 	{
-		width = 47,
+		width = 48,
 		height = 69,
 		numFrames = 5
 	}
@@ -129,12 +240,12 @@ function lvl:createPlayer(playerSheet, sequence)
 		player = display.newSprite(sheet_player, sequencesPlayer)			
 	end
 	player.name = 'JOGADOR'
-	player.x = 80
+	player.x = 130
 	player.y = 250
-	player.isFixedRotation=true
 	player:setSequence("normalRun")
 	player:play()	
 
+	playerT = player
 	return player
 end
 
@@ -249,8 +360,10 @@ function lvl:addHealth(score)
 end
 
 function lvl:reduceHealth(score)
+	print( "--- ENTROU FUNC ---" )
 	health = health - score
 	healthText.text = health .. "%"
+	print( "--- FUNC REDHEL ---" )
 end
 
 function lvl:addMoney(score)
@@ -349,7 +462,7 @@ function lvl:createFloor(groundImg)
 	local groundMax = 340
 	local groundLevel = groundMin
 	 
-	for a = 1, 8, 1 do
+	for a = 1, 9, 1 do
 		--AQUI GERAMOS O NOSSO CHÃO
 		local newBlock
 		newBlock = display.newImage(groundImg)
@@ -364,34 +477,36 @@ function lvl:createFloor(groundImg)
 	return floorGroup
 end
 
-function lvl:createObstacle(currentLevel)
-
-	local yVal = math.random(100, display.contentHeight-80)
-	local numObst = math.random(1, base.levels[currentLevel].numObstacles)
-	
-	obstacles[obstaclesCounter] = display.newImageRect(base.levels[currentLevel].obstacles[numObst].path, 60, 60)
-	obstacles[obstaclesCounter].x = display.contentWidth + 50
-	obstacles[obstaclesCounter].y = yVal
-	obstacles[obstaclesCounter].name = "OBSTACLE"
-	obstacles[obstaclesCounter].id = obstaclesCounter
-	physics.addBody(obstacles[obstaclesCounter], "kinematic",  { isSensor = true, gravity = 0, density=0.0 })
-
-	obstaclesCounter = obstaclesCounter + 1
-	return obstacles[obstaclesCounter - 1]
+function lvl:moveFloor(blocks)
+	for a = 1, blocks.numChildren, 1 do
+		
+	   if(a > 1) then
+	   		newX = (blocks[a - 1]).x + 79
+	   else
+			newX = (blocks[9]).x + 70
+	   end
+		
+	   if((blocks[a]).x < -80) then
+	   		(blocks[a]).x, (blocks[a]).y = newX, 300
+	   else
+	   		(blocks[a]):translate(-5, 0)
+	   end
+		
+	end
 end
+
 function lvl:createObstacle(currentLevel)
 
 	local yVal = math.random(100, display.contentHeight-80)
 	local numObst = math.random(1, base.levels[currentLevel].numObstacles)
 	
-	obstacles[obstaclesCounter] = display.newImageRect(base.levels[currentLevel].obstacles[numObst].path, 60, 60)
+	obstacles[obstaclesCounter] = display.newImageRect(base.levels[currentLevel].obstacles[numObst].path, 55, 55)
 	obstacles[obstaclesCounter].x = display.contentWidth + 50
 	obstacles[obstaclesCounter].y = yVal
 	obstacles[obstaclesCounter].name = "OBSTACLE"
-	obstacles[obstaclesCounter].type = base.levels[currentLevel].obstacles[numObst].type	
 	obstacles[obstaclesCounter].id = obstaclesCounter
+	obstacles[obstaclesCounter].type = base.levels[currentLevel].obstacles[numObst].type		
 	physics.addBody(obstacles[obstaclesCounter], "kinematic",  { isSensor = true, gravity = 0, density=0.0 })
-
 	obstaclesCounter = obstaclesCounter + 1
 	return obstacles[obstaclesCounter - 1]
 end
@@ -424,10 +539,10 @@ function lvl:createCollectible(currentLevel)
 	
 	local numColl = math.random(1, base.levels[currentLevel].numCollectibles)
 	
-	collectibles[collectiblesCounter] = display.newImageRect(base.levels[currentLevel].collectibles[numColl].path, 60, 60)
+	collectibles[collectiblesCounter] = display.newImageRect(base.levels[currentLevel].collectibles[numColl].path, 55, 55)
 	collectibles[collectiblesCounter].x = display.contentWidth + 50
 	collectibles[collectiblesCounter].y = yVal
-	collectibles[collectiblesCounter].name = "COLECIONAVEL"
+	collectibles[collectiblesCounter].name = "COLECIONAVEL"	
 	collectibles[collectiblesCounter].type = base.levels[currentLevel].collectibles[numColl].type
 	collectibles[collectiblesCounter].id = collectiblesCounter
 	physics.addBody(collectibles[collectiblesCounter], "kinematic",  { isSensor = true, gravity = 0, density=0.0 })
@@ -479,6 +594,41 @@ function lvl:destroy()
 	collectiblesCounter = 0
 	obstaclesCounter = 0
 	score = 0
+end
+
+function lvl:celebratePlayer(playerOld, playerNew)
+	playerOld:removeSelf()
+
+	local celebratingOptions =
+	{
+		width = 60,
+		height = 69,
+		numFrames = 4
+	}
+
+	local sheet_player
+	local player 
+
+	local sequencesPlayer = {{
+		name = "celebrating",
+		start = 1,
+		count = 4,
+		time = 400,
+		loopCount = 1,
+		loopDirection = "forward"
+	}}
+
+	sheet_player = graphics.newImageSheet(playerNew, celebratingOptions)	
+	player = display.newSprite(sheet_player, sequencesPlayer)		
+	
+	player.name = 'JOGADOR'
+	player.x = 130
+	player.y = 250
+	player:setSequence("celebrating")
+	player:play()	
+
+	playerT = player
+	return player
 end
 
 

@@ -4,8 +4,12 @@ local composer = require( "composer")
 local widget = require( "widget" )
 local sounds = require( "soundsfile" )
 
+local level = require("leveltemplate")
+
 -- Create a new Composer scene
 local scene = composer.newScene()
+
+local background
 
 local function gotoMenu()
 	composer.gotoScene( "scene.menu" )
@@ -15,10 +19,10 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-	playgameMusic(adultbgmusic)
+	playGameMusic(gameoverbgmusic)
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 
-	local background = display.newImageRect( sceneGroup, "ui/gameover/background.png", 600, 400 )
+	background = display.newImageRect( sceneGroup, "ui/gameover/background.png", 600, 400 )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
@@ -27,6 +31,8 @@ function scene:create( event )
 	backButton.y = display.contentCenterY + 100
 
 	backButton:addEventListener( "tap", gotoMenu )
+	level:reduceProjectiles(level:getNumProjectiles())
+	level:addProjectiles(10)
 end
 
 -- show()

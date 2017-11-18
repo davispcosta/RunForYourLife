@@ -27,11 +27,7 @@ function scene:create( event )
 		mainGroup:insert(player)
 	
 		level:setValues(100,100,100,100)
-		local header = level:buildHeader(true, true, true, true)
-		uiGroup:insert(header)
 	
-		level:buildPause(player)
-
 		local numShoots = level:createScoreProjectiles()
 		uiGroup:insert(numShoots)
 			
@@ -44,7 +40,8 @@ function scene:create( event )
 		mainGroup:insert(floor)
 	
 		physics.addBody(player, "dynamic", { density = 0, friction = 0, bounce = 0, gravity = 0 })
-	
+		player.isFixedRotation=true	
+		
 		local function creationLoop( event )
 			local aux = math.random(0, 10)
 	
@@ -60,6 +57,7 @@ function scene:create( event )
 		local function update( event )
 			level:moveCollectibles()
 			level:moveObstacles()
+			level:moveFloor(floor)
 			
 			back = level:updateBackground(level:getCurrentLevel())
 			backGroup:insert(back)
@@ -126,9 +124,9 @@ function scene:create( event )
 		player.collision = onLocalCollision
 		player:addEventListener("collision")
 	
-		jumpbtn = display.newImageRect("ui/base/jumpbtn.png", 40, 40)
-		jumpbtn.x = 20
-		jumpbtn.y = display.contentHeight - 40
+		jumpbtn = display.newImageRect("ui/base/jumpbtn.png", 60, 60)
+		jumpbtn.x = 0
+		jumpbtn.y = display.contentHeight - 35
 		uiGroup:insert(jumpbtn)
 
 		function jumpbtn:touch(event)
@@ -139,9 +137,9 @@ function scene:create( event )
 		end
 		jumpbtn:addEventListener("touch", jumpbtn)
 
-		shootbtn = display.newImageRect("ui/base/shootbtn.png", 40, 40)
+		shootbtn = display.newImageRect("ui/base/shootbtn.png", 60, 60)
 		shootbtn.x = display.contentWidth 
-		shootbtn.y = display.contentHeight - 40
+		shootbtn.y = display.contentHeight - 35
 	
 		local function shootCollision( self, event )
 			print( "--- COLISAO ---" )
@@ -194,13 +192,18 @@ function scene:create( event )
 					projectile:setLinearVelocity( 150, 0 )
 					projectile.collision = shootCollision
 					projectile:addEventListener("collision")
+					mainGroup:insert(projectile)
 					level:reduceProjectiles(1)
 				end
 			end
 		end	
 		shootbtn:addEventListener("touch", shootbtn)
 		uiGroup:insert(shootbtn)
-	
+
+		local header = level:buildHeader(true, true, true, true)
+		uiGroup:insert(header)
+
+		level:buildPause(player)
 end
 
 function scene:show( event )

@@ -7,36 +7,33 @@ local level = require("leveltemplate")
 -- Create a new Composer scene
 local scene = composer.newScene()
 
+local mainGroup = display.newGroup()
+
 function scene:create( event )
 
 	local sceneGroup = self.view
 
-	local background = display.newImageRect( sceneGroup, "ui/menu/background.png", 600, 400 )
-	background.x = display.contentCenterX
-	background.y = display.contentCenterY
-
-	pauserect = display.newRect(0, 0, display.contentWidth+100, 640)
-	pauserect.x = display.contentWidth/2
-	pauserect.alpha = 0.75
-	pauserect:addEventListener("tap", function() return true end)
-
 	nextbox = display.newImageRect("ui/nextLevel/box.png", 600, 320)
 		nextbox.x = display.contentCenterX
 		nextbox.y = display.contentCenterY
-	
+	mainGroup:insert(nextbox)
+		
 	cake = display.newImageRect("ui/nextLevel/cake.png", 200, 200)
 	cake.x = display.contentWidth/2 + 150
 	cake.y = display.contentHeight/2 + 80
+	mainGroup:insert(cake)	
 	
 	descriptionText = display.newText("PARABÉNS", 0, 0, "zorque.ttf", 50)
 	descriptionText:setFillColor(150/255, 114/255, 77/255)
 	descriptionText.x = display.contentWidth/2 - 70
 	descriptionText.y = 100
+	mainGroup:insert(descriptionText)	
 
 	congratulationsText = display.newText("AGORA.. ENVELHEÇA!", 0, 0, "zorque.ttf", 20)
 	congratulationsText:setFillColor(150/255, 114/255, 77/255)
 	congratulationsText.x = display.contentWidth/2 - 70
 	congratulationsText.y = 150
+	mainGroup:insert(congratulationsText)
 
 	nextbtn = display.newImageRect("ui/nextLevel/nextbtn.png", 170, 60)
 		nextbtn.x = display.contentCenterX - 80
@@ -56,18 +53,22 @@ function scene:create( event )
 				composer.gotoScene( "scene.oldLevel", { effect="crossFade", time=333 } )
 			end			
 		end)
-	
+	mainGroup:insert(nextbtn)
+
 	local baloon01 = display.newImageRect("ui/nextLevel/baloon01.png", 50, 100)
 	baloon01.x = display.contentCenterX + 220
 	baloon01.y = display.contentCenterY
+	mainGroup:insert(baloon01)
 
 	local baloon02 = display.newImageRect("ui/nextLevel/baloon02.png", 50, 100)
 	baloon02.x = display.contentCenterX - 220
 	baloon02.y = display.contentCenterY + 50
+	mainGroup:insert(baloon02)
 
-	local baloon02 = display.newImageRect("ui/nextLevel/baloon03.png", 50, 100)
-	baloon02.x = display.contentCenterX + 150
-	baloon02.y = display.contentCenterY - 70
+	local baloon03 = display.newImageRect("ui/nextLevel/baloon03.png", 50, 100)
+	baloon03.x = display.contentCenterX + 150
+	baloon03.y = display.contentCenterY - 70
+	mainGroup:insert(baloon03)
 	
 	local countMove = 0
 	down = true
@@ -83,12 +84,14 @@ function scene:create( event )
 
 		if down == true then
 			baloon01.y = baloon01.y + 1
-			baloon01.x = baloon01.x + 0.5
+			baloon02.y = baloon02.y - 1
+			baloon03.y = baloon03.y - 1
 
 			countMove = countMove + 1
 		else
 			baloon01.y = baloon01.y - 1
-			baloon01.x = baloon01.x - 0.5
+			baloon02.y = baloon02.y + 1
+			baloon03.y = baloon03.y + 1
 
 			countMove = countMove - 1
 		end
@@ -106,7 +109,6 @@ function scene:show( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is still off screen (but is about to come on screen)
-		timer.cancel(movementLoop)
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
 
@@ -121,8 +123,8 @@ function scene:hide( event )
 	local phase = event.phase
 
 	if ( phase == "will" ) then
-		-- Code here runs when the scene is on screen (but is about to go off screen)
-
+		display.remove(mainGroup)
+		timer.cancel(movementLoop)		
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
 

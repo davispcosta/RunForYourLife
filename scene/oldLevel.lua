@@ -12,6 +12,9 @@ local backGroup = display.newGroup()
 local mainGroup = display.newGroup()
 local uiGroup = display.newGroup()
 
+local deathLife = 10
+local age
+
 -----------------------------------
 -----------------------------------
 --- SCENE EVENT FUNCTIONS
@@ -25,14 +28,12 @@ function scene:create( event )
 	
 		player = level:createPlayer("ui/old/normal-sprite.png")
 		mainGroup:insert(player)
-	
-		level:setValues(100,100,100,100)
-	
+		
 		local numShoots = level:createScoreProjectiles()
 		uiGroup:insert(numShoots)
 			
-		local meters = level:createScoreMeters()
-		uiGroup:insert(meters)
+		age = level:createScoreAge()
+		uiGroup:insert(age)
 	
 		physics.start()		
 	
@@ -88,7 +89,7 @@ function scene:create( event )
 				if event.other.type == "shoot" then
 					level:addProjectiles(5)
 				end
-				level:addMeters()
+				level:addAge()
 	
 				level:collideCollectible()
 				timer.performWithDelay(1, function()
@@ -119,6 +120,19 @@ function scene:create( event )
 				else
 					composer.gotoScene( "scene.gameover", { time=800, effect="crossFade" } )
 				end				    	
+			end
+
+			if( event.other.name == "SKULL") then
+                level:reduceHealth(20)
+                if level:isAlive() then
+					timer.performWithDelay(1, function()
+						event.other.alpha = 0
+						event.other = nil
+					end, 1)
+					event.other:removeSelf();
+				else
+					composer.gotoScene( "scene.gameover", { time=800, effect="crossFade" } )
+				end
 			end
 		end
 		player.collision = onLocalCollision
@@ -156,7 +170,7 @@ function scene:create( event )
 				if event.other.type == "happiness" then
 					level:addHappiness(1)
 				end
-				level:addMeters()
+				level:addAge()
 	
 				level:collideCollectible()
 				timer.performWithDelay(1, function()
@@ -177,6 +191,24 @@ function scene:create( event )
 				event.other:removeSelf();
 				event.target:removeSelf();	    	
 			end
+
+			if( event.other.name == "DEATH") then
+				deathLife = deathLife - 1
+				scoreDeathLife.text = "Vida:  " .. deathLife
+
+				if(deathLife == 0) then
+					death:removeSelf()
+
+					scoreDeathLife:removeSelf()
+					age = level:createScoreAge()
+					uiGroup:insert(age)
+
+					timer.pause(movementDeathLoop)
+					timer.resume(deathTimer)
+					
+					timer.resume(emergeLoop)
+				end
+            end
 		end
 	
 		function shootbtn:touch(event)	
@@ -204,6 +236,63 @@ function scene:create( event )
 		uiGroup:insert(header)
 
 		level:buildPause(player)
+
+		-----------------------------------
+		-----------------------------------
+		--- DEATH
+
+		local deathMoveBoolean = false
+        deathYBelow = display.contentHeight - 200
+        deathYTop = 200
+
+        local function deathShoot()
+            local projectile = display.newImageRect("ui/old/skull.png", 30, 30 )
+            projectile.x = death.x
+            projectile.y = death.y
+            physics.addBody(projectile, 'dynamic')
+            projectile.gravityScale = 0
+            projectile.isSensor = true
+            projectile.name = "SKULL"
+            mainGroup:insert(projectile)
+            projectile:setLinearVelocity( -150, 0 )
+        end
+
+        local function deathMove()
+            if(deathMoveBoolean == false) then
+                death.y = deathYBelow
+                deathMoveBoolean = true
+                deathShoot()
+            else
+                death.y = deathYTop
+                deathMoveBoolean = false
+                deathShoot()
+            end 
+        end
+        
+		movementDeathLoop = timer.performWithDelay(1000, deathMove, -1)
+		timer.pause(movementDeathLoop)
+
+		function deathBoss()
+			timer.pause(deathTimer)
+			timer.pause(emergeLoop)
+			age:removeSelf()
+
+			death = display.newImageRect("ui/old/death.png", 100, 100)
+			death.x = display.contentWidth - 50
+			death.y = display.contentHeight - 200
+			death.name = "DEATH"
+			mainGroup:insert(death)
+
+			scoreDeathLife = display.newText("Vida:  " .. deathLife, 0, 0, "zorque.ttf", 30)
+			scoreDeathLife.x = display.contentCenterX
+			scoreDeathLife.y = display.contentHeight-20
+			uiGroup:insert(scoreDeathLife)
+
+			physics.addBody(death, "kinematic", { density = 0, friction = 0, bounce = 0, gravityScale = 0 })
+			timer.resume(movementDeathLoop)
+
+		end
+		deathTimer = timer.performWithDelay(20000, deathBoss, -1)
 end
 
 function scene:show( event )
@@ -225,6 +314,8 @@ function scene:hide( event )
 	local phase = event.phase
 
 	if ( phase == "will" ) then
+		timer.cancel(movementDeathLoop)
+		timer.cancel(deathTimer)
 		timer.cancel(movementLoop)
 		timer.cancel(emergeLoop)
 		display.remove(mainGroup)

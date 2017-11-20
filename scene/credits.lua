@@ -17,47 +17,65 @@ function scene:create( event )
 		box.y = display.contentCenterY
     mainGroup:insert(box)
 
-    titleText = display.newText("Créditos", 0, 0, "zorque.ttf", 20)
-	titleText:setFillColor(150/255, 114/255, 77/255)
-	titleText.x = display.contentWidth/2
-	titleText.y = 70
-	mainGroup:insert(titleText)	
-    
     developmentText = display.newText("Desenvolvimento e Design", 0, 0, "zorque.ttf", 30)
 	developmentText:setFillColor(150/255, 114/255, 77/255)
 	developmentText.x = display.contentWidth/2
-	developmentText.y = 120
+	developmentText.y = 75
 	mainGroup:insert(developmentText)	
 
 	developerText = display.newText("Davi S. P. Costa", 0, 0, "zorque.ttf", 20)
 	developerText:setFillColor(150/255, 114/255, 77/255)
 	developerText.x = display.contentWidth/2 
-	developerText.y = 150
+	developerText.y = 100
     mainGroup:insert(developerText)
     
     supportText = display.newText("Apoio", 0, 0, "zorque.ttf", 30)
 	supportText:setFillColor(150/255, 114/255, 77/255)
 	supportText.x = display.contentWidth/2
-	supportText.y = 200
+	supportText.y = 150
 	mainGroup:insert(supportText)	
 
 	friendsText = display.newText("Adriano Augusto | Emerson Araujo | Christian Nogueira", 0, 0, "zorque.ttf", 15)
 	friendsText:setFillColor(150/255, 114/255, 77/255)
 	friendsText.x = display.contentWidth/2
-	friendsText.y = 230
+	friendsText.y = 180
     mainGroup:insert(friendsText)
     
     friendsText = display.newText("Synara Soares | Eduardo Campos | Dario Gabriel", 0, 0, "zorque.ttf", 15)
 	friendsText:setFillColor(150/255, 114/255, 77/255)
 	friendsText.x = display.contentWidth/2
-	friendsText.y = 250
+	friendsText.y = 195
 	mainGroup:insert(friendsText)
     
     friendsText = display.newText("Manoel Silva | Iago Santos | Madson Chavante", 0, 0, "zorque.ttf", 15)
 	friendsText:setFillColor(150/255, 114/255, 77/255)
 	friendsText.x = display.contentWidth/2
-	friendsText.y = 270
-    mainGroup:insert(friendsText)
+	friendsText.y = 210
+	mainGroup:insert(friendsText)
+	
+	soundText = display.newText("Som e Música", 0, 0, "zorque.ttf", 30)
+	soundText:setFillColor(150/255, 114/255, 77/255)
+	soundText.x = display.contentWidth/2 - 150
+	soundText.y = 240
+	mainGroup:insert(soundText)
+
+	siteText = display.newText("opengameart.org", 0, 0, "zorque.ttf", 15)
+	siteText:setFillColor(150/255, 114/255, 77/255)
+	siteText.x = display.contentWidth/2 - 150
+	siteText.y = 265
+	mainGroup:insert(siteText)
+
+	soundText = display.newText("Fonte", 0, 0, "zorque.ttf", 30)
+	soundText:setFillColor(150/255, 114/255, 77/255)
+	soundText.x = display.contentWidth/2 + 130
+	soundText.y = 240
+	mainGroup:insert(soundText)
+
+	siteText = display.newText("1001freefonts.com/zorque.font", 0, 0, "zorque.ttf", 15)
+	siteText:setFillColor(150/255, 114/255, 77/255)
+	siteText.x = display.contentWidth/2 + 130
+	siteText.y = 265
+	mainGroup:insert(siteText)
     
 	backbtn = display.newImageRect("ui/menu/backbtn.png", 120, 40)
 	backbtn.x = display.contentWidth/2 + 200

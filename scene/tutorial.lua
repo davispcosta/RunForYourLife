@@ -36,8 +36,8 @@ function scene:create( event )
    local numShoots = level:createScoreProjectiles()
    uiGroup:insert(numShoots)
 
-   local meters = level:createScoreMeters()
-   uiGroup:insert(meters)
+   local age = level:createScoreAge()
+   uiGroup:insert(age)
 
    physics.start()		
    

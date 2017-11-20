@@ -19,8 +19,10 @@ local moneyText
 local wedding = 0
 local weddingText
 
-local meters = 0
-local scoreMeters
+
+local months = 0
+local years = 0
+local scoreAge
 local speed = 40;
 local jumpLimit = 0
 
@@ -265,7 +267,7 @@ function lvl:buildHeader(healthBoolean, happinessBoolean, moneyBoolean, weddingB
 	local header = display.newRect( 0, 0, display.contentWidth+100, 100 )
 		header.x = display.contentWidth/2
 		header.y = 0
-		header:setFillColor(1, 0.75, 0.14)
+		header:setFillColor(0.607, 0.164, 0.580)
 		headerGroup:insert(header)
 
 	if(healthBoolean == true) then
@@ -327,17 +329,55 @@ function lvl:createScoreProjectiles()
 	return numShoots
 end
 
-function lvl:createScoreMeters()
-	scoreMeters = display.newText("score:  " .. meters, 0, 0, "zorque.ttf", 30)
-	scoreMeters.x = display.contentCenterX
-	scoreMeters.y = display.contentHeight-20
-	uiGroup:insert(scoreMeters)
-	return scoreMeters
+function lvl:createScoreAge()
+	scoreAge = display.newText(months .. " Meses", 0, 0, "zorque.ttf", 30)
+	scoreAge.x = display.contentCenterX
+	scoreAge.y = display.contentHeight-20
+	if(months == 12) then
+		years = years + 1
+		months = 0
+	end
+	yearText = ""
+	monthText = ""
+	if(years > 0 )then
+		if years == 1 then
+			yearText = years .." Ano e "
+		else 
+			yearText = years .." Anos e "
+		end	
+	end
+	if months == 1 then
+		monthText = months .. " Mês"
+	else 
+		monthText = months .. " Meses"
+	end
+	scoreAge.text = yearText .. monthText
+	uiGroup:insert(scoreAge)
+	return scoreAge
 end
 
-function lvl:addMeters()
-	meters = meters + 1;
-	scoreMeters.text = "Score:  " .. meters
+function lvl:addAge()
+	months = months + 1;
+	if(months == 12) then
+		years = years + 1
+		months = 0
+	end
+	yearText = ""
+	monthText = ""
+	if(years > 0 )then
+		if years == 1 then
+			yearText = years .." Ano e "
+		else 
+			yearText = years .." Anos e "
+		end	
+	end
+	if months == 1 then
+		monthText = months .. " Mês"
+	else 
+		monthText = months .. " Meses"
+	end
+	scoreAge.text = yearText .. monthText
+
 end
 
 function lvl:addProjectiles(score)
@@ -567,8 +607,8 @@ function lvl:moveCollectibles()
 	end
 end
 
-function lvl:getMeters()
-	return meters
+function lvl:getYears()
+	return years
 end
 
 function lvl:getCurrentLevel()

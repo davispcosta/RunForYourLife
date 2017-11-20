@@ -24,13 +24,11 @@ function scene:create( event )
 	player = level:createPlayer("ui/child/normal-sprite.png")
 	mainGroup:insert(player)
 
-	level:setValues(100,100,100,100)
-
 	local numShoots = level:createScoreProjectiles()
 	uiGroup:insert(numShoots)
 		
-	local meters = level:createScoreMeters()
-	uiGroup:insert(meters)
+	local age = level:createScoreAge()
+	uiGroup:insert(age)
 	
 	physics.start()		
 	physics.addBody(player, "dynamic", { density = 0, friction = 0, bounce = 0, gravity = 0 })
@@ -79,7 +77,7 @@ function scene:create( event )
 			if event.other.type == "shoot" then
 				level:addProjectiles(5)
 			end
-			level:addMeters()
+			level:addAge()
 
 			level:collideCollectible()
 			timer.performWithDelay(1, function()
@@ -88,7 +86,7 @@ function scene:create( event )
 		    end, 1)
 			event.other:removeSelf();
 
-			if(level:getMeters() == 10) then
+			if(level:getYears() == 10) then
 				goToNextLevel()
 			end
 		end
@@ -120,6 +118,9 @@ function scene:create( event )
 	player:addEventListener("collision")
 
 	function goToNextLevel()
+		timer.performWithDelay(500, function()
+			playSFX(lvlupsound)			
+		end)
 		local playery = player.y
 		local playerx = player.x
 		player = level:celebratePlayer(player, "ui/child/celebrating.png")
@@ -228,7 +229,7 @@ function scene:create( event )
 			if event.other.type == "happiness" then
 				level:addHappiness(1)
 			end
-			level:addMeters()
+			level:addAge()
 
 			level:collideCollectible()
 			timer.performWithDelay(1, function()
@@ -238,7 +239,7 @@ function scene:create( event )
 			event.other:removeSelf();
 			event.target:removeSelf();
 			
-			if(level:getMeters() == 10) then
+			if(level:getYears() == 10) then
 				goToNextLevel()
 			end
 		end
@@ -303,8 +304,9 @@ function scene:hide( event )
 	if ( phase == "will" ) then
 		timer.cancel(movementLoop)
 		timer.cancel(emergeLoop)
-		timer.cancel(toLeft)
-		
+		if(toLeft ~= nil) then
+			timer.cancel(toLeft)			
+		end		
 		display.remove(mainGroup)
 		display.remove(uiGroup)
 		display.remove(backGroup)		

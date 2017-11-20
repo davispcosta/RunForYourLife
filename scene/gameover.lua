@@ -18,6 +18,7 @@ end
 function scene:create( event )
 
 	local sceneGroup = self.view
+	level:setValues(100,100,100,0)
 
 	playGameMusic(gameoverbgmusic)
 	-- Code here runs when the scene is first created but has not yet appeared on screen
@@ -30,9 +31,13 @@ function scene:create( event )
 	backButton.x = display.contentCenterX 
 	backButton.y = display.contentCenterY + 100
 
+	local age = level:createScoreAge()
+	sceneGroup:insert(age)
+	age.y = 50	
+
 	backButton:addEventListener( "tap", gotoMenu )
-	level:reduceProjectiles(level:getNumProjectiles())
-	level:addProjectiles(10)
+	--level:reduceProjectiles(level:getNumProjectiles())
+	--level:addProjectiles(10)
 end
 
 -- show()

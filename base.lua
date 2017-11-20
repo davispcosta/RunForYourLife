@@ -159,7 +159,7 @@ local base = {}
                 base.levels[3].backgroundNear[6].y = 130
 
             base.levels[3].collectibles = {}
-            base.levels[3].numCollectibles = 4        
+            base.levels[3].numCollectibles = 5        
 
                 base.levels[3].collectibles[1]={}
                 base.levels[3].collectibles[1].type = "health"
@@ -176,6 +176,10 @@ local base = {}
                 base.levels[3].collectibles[4]={}
                 base.levels[3].collectibles[4].type = "shoot"
                 base.levels[3].collectibles[4].path = "ui/collect/phone.png"
+
+                base.levels[3].collectibles[5]={}
+                base.levels[3].collectibles[5].type = "love"
+                base.levels[3].collectibles[5].path = "ui/collect/star.png"
 
             base.levels[3].obstacles = {}
             base.levels[3].numObstacles = 3

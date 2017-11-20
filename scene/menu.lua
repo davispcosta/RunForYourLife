@@ -33,74 +33,6 @@ local function openTutorial()
 	composer.gotoScene( "scene.tutorial" )
 end
 
-local function openAchievements()
-	playSFX(menupicksound)	
-	achievementsGroup = display.newGroup()
-
-	pauserect = display.newRect(0, 0, display.contentWidth+100, 640)
-	pauserect.x = display.contentWidth/2
-	pauserect:setFillColor(0,0,0)
-	pauserect.alpha = 0.75
-	pauserect:addEventListener("tap", function() return true end)
-	achievementsGroup:insert(pauserect)
-
-	resumebox = display.newImageRect("ui/menu/box.png", 680, 320)
-	resumebox.x = display.contentWidth/2
-	resumebox.y = display.contentHeight/2 
-	achievementsGroup:insert(resumebox)
-
-	titleText = display.newText("ACHIEVEMENTS", 0, 0, "zorque.ttf", 30)
-	titleText:setFillColor(0.2)
-	titleText.x = 100
-	titleText.y = 70
-	achievementsGroup:insert(titleText)
-
-	backbtn = display.newImageRect("ui/menu/backbtn.png", 120, 40)
-	backbtn.x = display.contentWidth/2 + 200
-	backbtn.y = 70
-	achievementsGroup:insert(backbtn)
-	backbtn:addEventListener("tap", function()
-		display.remove(achievementsGroup)
-	end
-	)
-
-	local scrollView = widget.newScrollView{
-		left = -50,
-		leftPadding = 50,
-		top = 90,
-		width = display.contentWidth+100,
-		height = display.contentHeight/2,
-		horizontalScrollDisabled = false ,
-		hideBackground = true,
-		verticalScrollDisabled = true ,
-	}
-	local xPos = 85
-	local yPos = 120
-	for i = 1, base.numAchievements do 		
-		rect = display.newRect(xPos, yPos, 150, 200)
-		achievementsGroup:insert(rect)
-		scrollView:insert(rect);
-		achievementsGroup:insert(scrollView)
-		
-		icon = display.newImageRect("ui/collect/star.png", 50, 50)
-		icon.x = xPos 
-		icon.y = yPos - 50
-		scrollView:insert(icon)
-		
-		titleText = display.newText(base.achievements[i].title, xPos, yPos, "zorque.ttf", 15)
-		titleText:setFillColor(0.2)
-		achievementsGroup:insert(titleText)
-		scrollView:insert(titleText)
-
-		descriptionText = display.newText(base.achievements[i].description, xPos, yPos+15, "zorque.ttf", 5)
-		descriptionText:setFillColor(0.2)
-		achievementsGroup:insert(descriptionText)
-		scrollView:insert(descriptionText)
-		
-		xPos = xPos + 200
-	end
-end
-
 local function openSettings()
 	playSFX(menupicksound)
 	settingGroup = display.newGroup()
@@ -146,7 +78,6 @@ local function openSettings()
 	musicon.y = display.contentHeight/2 - 40
 	musicon.width = 70
 	musicon.height = 30
-	settingGroup:insert(musicon)
 	local musicoff = display.newImage("ui/menu/soundsoff.png", 70, 30)
 	musicoff.width = 70
 	musicoff.height = 30
@@ -161,20 +92,28 @@ local function openSettings()
 		musicoff.isVisible = true
 	end
 	
-local function onTap( self, event )
-		musicon.isVisible = not musicon.isVisible
-		musicoff.isVisible = not musicoff.isVisible
-		if(musicon.isVisible) then
-			loadedSettings.musicOn = true
-			audio.setVolume( 0.75, { channel=1 } )			
-		else 
-			loadedSettings.musicOn = false
-			audio.setVolume( 0, { channel=1 } )			
-		end
-		loadsave.saveTable(loadedSettings, "settings.json")
+	function musicon:tap(event)
+		print("MUSICON TOUCH")
+		loadedSettings.musicOn = false		
+		musicon.isVisible = false
+		musicoff.isVisible = true
+		audio.setVolume(0, {channel = 1})
+		loadsave.saveTable(loadedSettings, "settings.json")	
 	end 
-	musicon:addEventListener("tap", onTap )
-	musicoff:addEventListener("tap", onTap )
+	musicon:addEventListener("tap", musicon )
+	settingGroup:insert(musicon)
+	
+	
+	function musicoff:tap(event)
+		print("MUSICOFF TOUCH")
+		loadedSettings.musicOn = true		
+		musicon.isVisible = true
+		musicoff.isVisible = false
+		playGameMusic(menubgmusic)								
+		audio.setVolume(0.75, {channel = 1})
+		loadsave.saveTable(loadedSettings, "settings.json")		
+	end 
+	musicoff:addEventListener("tap", musicoff)
 
 	soundText = display.newText("Sons", 0, 0, "zorque.ttf", 20)
 	soundText:setFillColor(0.2)
@@ -185,62 +124,42 @@ local function onTap( self, event )
 	local soundon = display.newImageRect("ui/menu/soundson.png", 70, 30)
 	soundon.x = display.contentWidth/2+50
 	soundon.y = display.contentHeight/2
-	settingGroup:insert(soundon)	
+	soundon.width = 70
+	soundon.height = 30
 	
 	local soundoff = display.newImage("ui/menu/soundsoff.png", 70, 30)
 	soundoff.x = display.contentWidth/2+50
 	soundoff.y = display.contentHeight/2
-	soundoff.isVisible = false
+	soundoff.width = 70
+	soundoff.height = 30
+
+	if(loadedSettings.soundOn == true) then
+		soundon.isVisible = true
+		soundoff.isVisible = false
+	else
+		soundon.isVisible = false
+		soundoff.isVisible = true
+	end
+	
+	function soundon:tap(event)
+		loadedSettings.soundOn = false		
+		soundon.isVisible = false
+		soundoff.isVisible = true
+		audio.setVolume(0, {channel = 2})
+		loadsave.saveTable(loadedSettings, "settings.json")
+	end 
+	soundon:addEventListener("tap", soundon)
+	settingGroup:insert(soundon)
+
+	function soundoff:tap(event)
+		loadedSettings.soundOn = true		
+		soundon.isVisible = true
+		soundoff.isVisible = false
+		audio.setVolume(0.75, {channel = 2})
+		loadsave.saveTable(loadedSettings, "settings.json")
+	end 
+	soundoff:addEventListener("tap", soundoff)	
 	settingGroup:insert(soundoff)	
-	
-	local function onTap( self, event )
-		soundon.isVisible = not soundon.isVisible
-		soundoff.isVisible = not soundoff.isVisible
-		if(soundon.isVisible) then
-			soundon.width = 70
-			soundon.height = 30
-		else 
-			soundoff.width = 70
-			soundoff.height = 30
-		end
-		
-		return true
-	end 
-	soundon:addEventListener( "tap", onTap )
-	soundoff:addEventListener( "tap", onTap )
-
-	languageText = display.newText("Idioma", 0, 0, "zorque.ttf", 20)
-	languageText:setFillColor(0.2)
-	languageText.x = display.contentWidth/2 - 50
-	languageText.y = 200
-	settingGroup:insert(languageText)		
-
-	local englishon = display.newImageRect("ui/menu/englishon.png", 70, 30)
-	englishon.x = display.contentWidth/2+50
-	englishon.y = display.contentHeight/2 + 40
-	settingGroup:insert(englishon)		
-	
-	local portugueseon = display.newImage("ui/menu/portugueseon.png", 70, 30)
-	portugueseon.x = display.contentWidth/2+50
-	portugueseon.y = display.contentHeight/2 + 40
-	settingGroup:insert(portugueseon)			
-	portugueseon.isVisible = false
-		
-	local function onTap( self, event )
-		portugueseon.isVisible = not portugueseon.isVisible
-		englishon.isVisible = not englishon.isVisible
-		if(portugueseon.isVisible) then
-			portugueseon.width = 70
-			portugueseon.height = 30
-		else 
-			englishon.width = 70
-			englishon.height = 30
-		end
-		
-		return true
-	end 
-	portugueseon:addEventListener( "tap", onTap )
-	englishon:addEventListener( "tap", onTap )
 	
 end
 
@@ -249,8 +168,9 @@ function scene:create(event)
 
 	local sceneGroup = self.view
 	physics:start()
-	
+
 	playGameMusic(menubgmusic)
+	print("CREATE")
 	
 	local background = display.newRect(display.contentCenterX, display.contentCenterY, 580, 400 )
 	background:setFillColor(0.39,0.78,0.81)
@@ -297,21 +217,16 @@ function scene:create(event)
 	lvlButton.x = display.contentCenterX
 	lvlButton.y = display.contentCenterY + 100
 
-	local achievementButton = display.newImageRect( sceneGroup, "ui/menu/achievementbtn.png", 70, 50 )
-	achievementButton.x = display.contentCenterX + 80
-	achievementButton.y = display.contentCenterY + 100
-
 	local settingsButton = display.newImageRect( sceneGroup, "ui/menu/settingsbtn.png", 70, 50 )
 	settingsButton.x = display.contentCenterX + 160
 	settingsButton.y = display.contentCenterY + 100
 
-	local helpButton = display.newImageRect( sceneGroup, "ui/menu/helpbtn.png", 40, 40 )
-	helpButton.x = display.contentWidth
-	helpButton.y = 50
+	local helpButton = display.newImageRect( sceneGroup, "ui/menu/helpbtn.png", 70, 50 )
+	helpButton.x = display.contentCenterX + 80
+	helpButton.y = display.contentCenterY + 100
 
 	playButton:addEventListener( "tap", gotoGame )
 	lvlButton:addEventListener("tap", openLevels)
-	achievementButton:addEventListener("tap", openAchievements)
 	settingsButton:addEventListener("tap", openSettings)
 	helpButton:addEventListener("tap", openTutorial)
 
@@ -458,7 +373,7 @@ function scene:show( event )
 	local sceneGroup = self.view
 	local phase = event.phase
 
-	if ( phase == "will" ) then
+	if ( phase == "will" ) then		
 		-- Code here runs when the scene is still off screen (but is about to come on screen)
 
 	elseif ( phase == "did" ) then

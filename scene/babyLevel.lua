@@ -33,13 +33,13 @@ function scene:create( event )
 	player = level:createPlayer("ui/baby/normal-sprite.png", "running")
 	mainGroup:insert(player)
 
-	level:setValues(100,100,100,100)		
+	level:setValues(100,100,100,0)		
 		
 	local numShoots = level:createScoreProjectiles()
 	uiGroup:insert(numShoots)
 
-	local meters = level:createScoreMeters()
-	uiGroup:insert(meters)
+	local age = level:createScoreAge()
+	uiGroup:insert(age)
 
 	physics.start()		
 	
@@ -89,7 +89,7 @@ function scene:create( event )
 			if event.other.type == "shoot" then
 				level:addProjectiles(5)
 			end
-			level:addMeters()
+			level:addAge()
 
 			level:collideCollectible()
 			timer.performWithDelay(1, function()
@@ -98,13 +98,13 @@ function scene:create( event )
 		    end, 1)
 			event.other:removeSelf();
 			
-			if(level:getMeters() == 5) then
+			if(level:getYears() == 5) then
 				goToNextLevel()				
 			end
 		end
 
 		if( event.other.name == "OBSTACLE") then
-			playSFX(bubblepop)
+			playSFX(losesound)
 			
 			level:reduceHealth(10)			
 			level:collideObstacle()
@@ -123,6 +123,9 @@ function scene:create( event )
 	player:addEventListener("collision")
 
 	function goToNextLevel()
+		timer.performWithDelay(500, function()
+			playSFX(lvlupsound)			
+		end)
 		local playery = player.y
 		local playerx = player.x
 		player = level:celebratePlayer(player, "ui/baby/celebrating.png")
@@ -222,7 +225,7 @@ function scene:create( event )
 		
 		if( event.other.name == "COLECIONAVEL") then
 			level:addHealth(1)
-			level:addMeters()
+			level:addAge()
 
 			level:collideCollectible()
 			timer.performWithDelay(1, function()
@@ -232,7 +235,7 @@ function scene:create( event )
 			event.other:removeSelf();
 			event.target:removeSelf();
 			
-			if(level:getMeters() == 5) then
+			if(level:getYears() == 5) then
 				goToNextLevel()	
 			end
 		end

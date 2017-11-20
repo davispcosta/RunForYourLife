@@ -1,7 +1,7 @@
 --MUSIC 
 menubgmusic = audio.loadStream ("sound/menu.mp3")
 gameoverbgmusic = audio.loadStream ("sound/death_is_just_another_path.mp3")
-babybgmusic = audio.loadStream ("sound/school_of_quirks.mp3")
+babybgmusic = audio.loadStream ("sound/baby_song.mp3")
 childbgmusic = audio.loadStream ("sound/school_of_quirks.mp3")
 youngbgmusic = audio.loadStream ("sound/a_journey_awaits.mp3")
 adultbgmusic = audio.loadStream ("sound/busy_day_at_the_market.wav")
@@ -9,27 +9,20 @@ oldbgmusic = audio.loadStream ("sound/school_of_quirks.mp3")
 
 --SOUND
 bubblepop = audio.loadSound ("sound/pop.mp3")
+losesound = audio.loadSound ("sound/lose.wav")
 menupicksound = audio.loadSound ("sound/menu_pick.wav")
 jumpsound = audio.loadSound ("sound/jump.wav")
 shootsound = audio.loadSound ("sound/huh.wav")
-
-soundisOn = true 
-musicisOn = true 
+lvlupsound = audio.loadSound ("sound/chipquest.wav")
  
-audio.reserveChannels (1) 
+audio.reserveChannels (2) 
 
-function playSFX (soundfile, volumelevel) 
- 	if soundisOn == true then 
-		local volumelevel = volumelevel or 1.0
-		audio.play(soundfile, {channel =  2})
-		audio.setVolume(volumelevel, {soundfile} )
-	end 
+function playSFX (soundfile) 
+	audio.play(soundfile, {channel =  2})
 end 
  
 function playGameMusic(soundfile)
-	if musicisOn == true then 
-		audio.play (soundfile, {channel = 1, loops = -1 , fadein=2500})
-	end 
+	audio.play (soundfile, {channel = 1, loops = -1 , fadein=2500})	
 end
  
 function resetMusic (soundfile)

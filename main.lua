@@ -1,6 +1,7 @@
 
 local composer = require "composer"
 local loadsave = require( "loadsave")
+local level = require("leveltemplate")
 
 -- REMOVE 'BOTTOM BAR' NO ANDROID 
 if system.getInfo( "androidApiLevel" ) and system.getInfo( "androidApiLevel" ) < 19 then
@@ -35,7 +36,7 @@ function splashScreen()
 	
 	--transition.to(logo, {transition = easing.outSine, time = 500, delay = 2000, alpha = 0})
 
-	composer.gotoScene( "scene.menu", { params={ } } )
+	composer.gotoScene( "scene.youngLevel", { params={ } } )
 end
 
 -- VAI PARA O MENU

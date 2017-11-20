@@ -12,6 +12,8 @@ local backGroup = display.newGroup()
 local mainGroup = display.newGroup()
 local uiGroup = display.newGroup()
 
+local deathLife = 10
+
 -----------------------------------
 -----------------------------------
 --- SCENE EVENT FUNCTIONS
@@ -28,7 +30,8 @@ function scene:create( event )
         
         death = display.newImageRect("ui/old/death.png", 100, 100)
         death.x = display.contentWidth - 50
-        death.y = display.contentHeight - 200
+		death.y = display.contentHeight - 200
+		death.name = "DEATH"
         mainGroup:insert(death)
 	
 		level:setValues(100,100,100,100)
@@ -39,9 +42,11 @@ function scene:create( event )
 
 		local numShoots = level:createScoreProjectiles()
 		uiGroup:insert(numShoots)
-			
-		local meters = level:createScoreMeters()
-		uiGroup:insert(meters)
+
+		scoreDeathLife = display.newText("Vida:  " .. deathLife, 0, 0, "zorque.ttf", 30)
+		scoreDeathLife.x = display.contentCenterX
+		scoreDeathLife.y = display.contentHeight-20
+		uiGroup:insert(scoreDeathLife)			
 	
 		physics.start()		
 	
@@ -49,6 +54,8 @@ function scene:create( event )
 		mainGroup:insert(floor)
 	
 		physics.addBody(player, "dynamic", { density = 0, friction = 0, bounce = 0, gravity = 0 })
+		physics.addBody(death, "kinematic", { density = 0, friction = 0, bounce = 0, gravityScale = 0 })
+		
 	
 		local function update( event )
 			
@@ -59,9 +66,6 @@ function scene:create( event )
 		movementLoop = timer.performWithDelay(1, update, -1)
 	
 		local function onLocalCollision( self, event )
-			print( "--- COLISAO ---" )
-			print( event.target.name )        --the first object in the collision
-			print( event.other.name )         --the second object in the collision
 						
 			if( event.other.name == "CHAO") then
 				jumpLimit = 0
@@ -105,6 +109,15 @@ function scene:create( event )
 			print( "--- COLISAO ---" )
 			print( event.target.name )        --the first object in the collision
 			print( event.other.name )         --the second object in the collision
+
+			if( event.other.name == "DEATH") then
+				deathLife = deathLife - 1
+				scoreDeathLife.text = "Vida:  " .. deathLife
+
+				if(deathLife == 0) then
+					death:removeSelf()
+				end
+            end
 	
         end
 	
